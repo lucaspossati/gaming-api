@@ -10,6 +10,8 @@ namespace Data.Repository.Interface
     {
         Task<IEnumerable<Person>> Get();
 
+        Task<IEnumerable<Person>> GetWithFilters(string? fullName = null, string? phoneNumber = null, string? address = null);
+
         Task<Person?> Get(Guid id);
 
         Task<Person> Post(Person model);

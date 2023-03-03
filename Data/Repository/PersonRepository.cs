@@ -20,8 +20,30 @@ namespace Data.Repository
         public async Task<IEnumerable<Person>> Get()
         {
             return await context.People
-                .Include(x => x.Company)
+                
                 .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Person>> GetWithFilters(string? fullName = null, string? phoneNumber = null, string? address = null)
+        {
+            var queryable = context.People.AsQueryable();
+
+            if (!string.IsNullOrEmpty(fullName))
+            {
+                queryable = queryable.Where(x => x.FullName == fullName);
+            }
+
+            if (!string.IsNullOrEmpty(phoneNumber))
+            {
+                queryable = queryable.Where(x => x.PhoneNumber == phoneNumber);
+            }
+
+            if (!string.IsNullOrEmpty(address))
+            {
+                queryable = queryable.Where(x => x.Address == address);
+            }
+
+            return await queryable.Include(x => x.Company).ToListAsync();
         }
 
         public async Task<Person?> Get(Guid id)

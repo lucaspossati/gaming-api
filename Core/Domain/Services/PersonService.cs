@@ -8,6 +8,7 @@ using Core.Validator;
 using Core.Validator.User;
 using Data.Repository.Interface;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace api.Domain.Services
 {
@@ -25,6 +26,13 @@ namespace api.Domain.Services
         public async Task<IEnumerable<PersonVM>> Get()
         {
             var response = await personRepository.Get();
+
+            return mapper.Map<List<PersonVM>>(response);
+        }
+
+        public async Task<IEnumerable<PersonVM>> GetWithFilters(string? fullName = null, string? phoneNumber = null, string? address = null)
+        {
+            var response = await personRepository.GetWithFilters(fullName, phoneNumber, address);
 
             return mapper.Map<List<PersonVM>>(response);
         }

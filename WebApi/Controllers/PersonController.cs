@@ -23,10 +23,26 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("")]
+        [Route("get-all")]
         public async Task<BaseResponse<IEnumerable<PersonVM>>> Get()
         {
             var response = await personService.Get();
+
+            return new BaseResponse<IEnumerable<PersonVM>>()
+            {
+                StatusCode = HttpStatusCode.OK,
+                Message = "Success to list people",
+                Success = true,
+                Data = response
+            };
+        }
+
+        [HttpGet]
+        [Route("search")]
+        public async Task<BaseResponse<IEnumerable<PersonVM>>> GetWithFilter([FromQuery] string? fullName = null,
+            [FromQuery] string? phoneNumber = null, [FromQuery] string? address = null)
+        {
+            var response = await personService.GetWithFilters(fullName, phoneNumber, address);
 
             return new BaseResponse<IEnumerable<PersonVM>>()
             {

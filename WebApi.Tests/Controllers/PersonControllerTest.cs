@@ -22,9 +22,6 @@ namespace WebApi.Tests.Controllers
             personService = Substitute.For<IPersonService>();
             controller = new PersonController(personService);
 
-            //personVM = new UserVMFaker().Generate();
-            //personVMList = new UserVMFaker().Generate(10);
-            //baseResponse = new UserVMFakerBR().Generate();
             baseResponse.Data = personVMList;
         }
 
