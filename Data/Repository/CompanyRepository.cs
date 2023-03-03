@@ -22,6 +22,7 @@ namespace Data.Repository
         {
             return await context.Companies
                 .Include(x => x.People)
+                .OrderBy(x => x.Name)
                 .ToListAsync();
         }
 

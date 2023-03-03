@@ -20,7 +20,8 @@ namespace Data.Repository
         public async Task<IEnumerable<Person>> Get()
         {
             return await context.People
-                
+                .Include(x => x.Company)
+                .OrderBy(x => x.FullName)
                 .ToListAsync();
         }
 
