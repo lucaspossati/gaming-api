@@ -35,9 +35,11 @@ namespace WebApi.Tests.Controllers
         {
             var control = new List<PersonVM>();
             personVMList.ForEach(x => control.Add(x.TypedCloneDependency()));
-
             personService.Get().Returns(personVMList);
+
             var result = (ObjectResult)await controller.Get();
+
+            await personService.Received().Get();
             result.StatusCode.Should().Be(StatusCodes.Status200OK);
             result.Value.Should().BeEquivalentTo(control);
         }
@@ -66,7 +68,7 @@ namespace WebApi.Tests.Controllers
         }
 
         [Fact]
-        public async Task Get_WildCard_Ok()
+        public async Task GetWildCard_Ok()
         {
             personService.GetWildCard().Returns(personVM.TypedCloneDependency());
 
@@ -79,7 +81,7 @@ namespace WebApi.Tests.Controllers
 
 
         [Fact]
-        public async Task Get_Search()
+        public async Task GetSearch_Ok()
         {
             var control = new List<PersonVM>();
             personVMList.ForEach(x => control.Add(x.TypedCloneDependency()));

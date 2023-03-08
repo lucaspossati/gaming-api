@@ -1,13 +1,13 @@
 ﻿using Bogus;
 using FakeData.CompanyData;
-using Manager.VM.Person;
 
 namespace FakeData.PersonData
 {
-    public class NewPersonVMFaker : Faker<NewPersonVM>
+    public class PersonFaker : Faker<Application.Models.Person>
     {
-        public NewPersonVMFaker()
+        public PersonFaker()
         {
+            RuleFor(x => x.Id, prop => new Faker().Random.Guid());
             RuleFor(x => x.FullName, prop => prop.Person.FullName);
             RuleFor(x => x.PhoneNumber, prop => prop.Person.Phone);
             RuleFor(x => x.Address, prop => prop.Person.Address.Street);

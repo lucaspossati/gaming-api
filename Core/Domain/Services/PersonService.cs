@@ -37,13 +37,15 @@ namespace api.Domain.Services
             return mapper.Map<List<PersonVM>>(response);
         }
 
-        public async Task<PersonVM> GetWildCard()
+        public async Task<PersonVM> GetWildCard(int? index = null)
         {
+            var randomIndex = 0;
             var response = (await personRepository.Get()).ToList();
-            var rng = new Random();
-            var randomIndex = rng.Next(0, response.Count);
 
-            return mapper.Map<PersonVM>(response[randomIndex]);
+            if(index == null)
+                randomIndex = await GenerateRandomIndex();
+
+            return mapper.Map<PersonVM>(index == null ? response[randomIndex] : response[index.Value]);
         }
 
         public async Task<PersonVM> Get(Guid id)
@@ -96,6 +98,13 @@ namespace api.Domain.Services
             await personRepository.Delete(id);
 
             return mapper.Map<PersonVM>(model); ;
+        }
+
+        public async Task<int> GenerateRandomIndex()
+        {
+            var response = (await personRepository.Get()).ToList();
+            var rng = new Random();
+            return rng.Next(0, response.Count);
         }
     }
 }
