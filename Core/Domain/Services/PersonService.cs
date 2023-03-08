@@ -1,13 +1,13 @@
 ﻿
 
 using api.Domain.Services.Interfaces;
-using API.Domain.VM;
 using Application.Models;
 using AutoMapper;
 using Core.Validator;
 using Core.Validator.User;
 using Data.Repository.Interface;
 using FluentValidation.Results;
+using Manager.VM.Person;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Domain.Services
@@ -53,7 +53,7 @@ namespace api.Domain.Services
             return mapper.Map<PersonVM>(response);
         }
 
-        public async Task<PersonVM> Post(PersonVM model)
+        public async Task<PersonVM> Post(NewPersonVM model)
         {
             var validator = new CreatePersonValidator();
 
@@ -61,15 +61,15 @@ namespace api.Domain.Services
 
             Validation.AddErrors(model, results);
 
-            if (model.Errors != null && model.Errors.Count > 0) return model;
-
-            model.Id = Guid.NewGuid();
+            if (model.Errors != null && model.Errors.Count > 0) return mapper.Map<PersonVM>(model);
 
             var vmToModel = mapper.Map<Person>(model);
 
-            await personRepository.Post(vmToModel);
+            vmToModel.Id = Guid.NewGuid();
 
-            return model;
+            var person = await personRepository.Post(vmToModel);
+
+            return mapper.Map<PersonVM>(person);
         }
 
         public async Task<PersonVM> Put(PersonVM model)

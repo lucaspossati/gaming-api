@@ -1,13 +1,13 @@
 ﻿
 
 using api.Domain.Services.Interfaces;
-using API.Domain.VM;
 using Application.Models;
 using AutoMapper;
 using Core.Validator;
 using Core.Validator.User;
 using Data.Repository.Interface;
 using FluentValidation.Results;
+using Manager.VM.Company;
 
 namespace api.Domain.Services
 {
@@ -38,7 +38,7 @@ namespace api.Domain.Services
             return mapper.Map<CompanyVM>(response);
         }
 
-        public async Task<CompanyVM> Post(CompanyVM model)
+        public async Task<CompanyVM> Post(NewCompanyVM model)
         {
             var validator = new CreateCompanyValidator();
 
@@ -56,16 +56,17 @@ namespace api.Domain.Services
                 }
             }
 
-            if (model.Errors != null && model.Errors.Count > 0) return model;
+            if (model.Errors != null && model.Errors.Count > 0) return mapper.Map<CompanyVM>(model);
 
-            model.Id = Guid.NewGuid();
             model.RegistrationDate = DateTime.UtcNow;
 
             var vmToModel = mapper.Map<Company>(model);
 
-            await companyRepostiory.Post(vmToModel);
+            vmToModel.Id = Guid.NewGuid();
 
-            return model;
+            var company = await companyRepostiory.Post(vmToModel);
+
+            return mapper.Map<CompanyVM>(company);
         }
 
         public async Task<CompanyVM> Put(CompanyVM model)

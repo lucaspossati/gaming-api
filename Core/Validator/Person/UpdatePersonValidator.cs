@@ -1,5 +1,5 @@
-﻿using API.Domain.VM;
-using FluentValidation;
+﻿using FluentValidation;
+using Manager.VM.Person;
 
 namespace Core.Validator.User
 {

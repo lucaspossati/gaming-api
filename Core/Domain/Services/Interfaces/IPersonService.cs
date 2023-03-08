@@ -1,4 +1,4 @@
-﻿using API.Domain.VM;
+﻿using Manager.VM.Person;
 
 namespace api.Domain.Services.Interfaces
 {
@@ -8,7 +8,7 @@ namespace api.Domain.Services.Interfaces
         Task<IEnumerable<PersonVM>> GetWithFilters(string? fullName = null, string? phoneNumber = null, string? address = null);
         Task<PersonVM> GetWildCard();
         Task<PersonVM> Get(Guid id);
-        Task<PersonVM> Post(PersonVM model);
+        Task<PersonVM> Post(NewPersonVM model);
         Task<PersonVM> Put(PersonVM model);
         Task<PersonVM> Delete(Guid id);
     }

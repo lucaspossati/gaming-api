@@ -1,8 +1,6 @@
-﻿
-using API.Domain.VM;
-using Application.Models;
+﻿using Application.Models;
 using AutoMapper;
-
+using Manager.VM.Person;
 
 namespace api.Profiles
 {
@@ -12,8 +10,12 @@ namespace api.Profiles
         {
             CreateMap<PersonVM, Person>();
 
+            CreateMap<NewPersonVM, PersonVM>();
+
             CreateMap<Person, PersonVM>()
                 .ForMember(u => u.Company, opt => opt.MapFrom(sp => sp.Company));
+
+
         }
     }
 }

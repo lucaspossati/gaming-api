@@ -1,6 +1,6 @@
 ﻿using api.Domain.Services.Interfaces;
 using api.Domain.VM.Shared;
-using API.Domain.VM;
+using Manager.VM.Company;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -34,108 +34,18 @@ namespace WebApi.Controllers
             return NotFound();
         }
 
-        [HttpGet]
-        [Route("{id:guid}")]
-        public async Task<BaseResponse<CompanyVM>> Get([FromRoute] Guid id)
-        {
-            var response = await companyService.Get(id);
-
-            if (response == null)
-            {
-                return new BaseResponse<CompanyVM>()
-                {
-                    StatusCode = HttpStatusCode.NotFound,
-                    Message = "Company not found",
-                    Success = false,
-                    Data = null
-                };
-            }
-
-            return new BaseResponse<CompanyVM>()
-            {
-                StatusCode = HttpStatusCode.OK,
-                Message = "Succes to get company",
-                Success = true,
-                Data = response
-            };
-        }
-
         [HttpPost]
         [Route("")]
-        public async Task<BaseResponse<CompanyVM>> Post([FromBody] CompanyVM model)
+        public async Task<IActionResult> Post([FromBody] NewCompanyVM model)
         {
             var response = await companyService.Post(model);
 
             if (response.Errors != null)
             {
-                return new BaseResponse<CompanyVM>()
-                {
-                    StatusCode = HttpStatusCode.BadRequest,
-                    Message = "Error to create company",
-                    Success = false,
-                    Data = model
-                };
+                return BadRequest(response);
             }
-
-            return new BaseResponse<CompanyVM>()
-            {
-                StatusCode = HttpStatusCode.OK,
-                Message = "Success to create company",
-                Success = true,
-                Data = response
-            };
+            return CreatedAtAction(nameof(Get), new { id = response.Id }, response);
         }
-
-        [HttpPut]
-        [Route("")]
-        public async Task<BaseResponse<CompanyVM>> Put([FromBody] CompanyVM model)
-        {
-            var response = await companyService.Put(model);
-
-            if (response.Errors != null)
-            {
-                return new BaseResponse<CompanyVM>()
-                {
-                    StatusCode = HttpStatusCode.BadRequest,
-                    Message = "Error to update company",
-                    Success = false,
-                    Data = model
-                };
-            }
-
-            return new BaseResponse<CompanyVM>()
-            {
-                StatusCode = HttpStatusCode.OK,
-                Message = "Success to update company",
-                Success = true,
-                Data = model
-            };
-        }
-
-        [HttpDelete]
-        [Route("{id:guid}")]
-        public async Task<BaseResponse<object>> Delete([FromRoute] Guid id)
-        {
-            var model = await companyService.Delete(id);
-
-            if (model == null)
-            {
-                return new BaseResponse<object>()
-                {
-                    StatusCode = HttpStatusCode.NotFound,
-                    Message = "Company not found",
-                    Success = false,
-                    Data = null
-                };
-            }
-
-            return new BaseResponse<object>()
-            {
-                StatusCode = HttpStatusCode.OK,
-                Message = "Success to delete company",
-                Success = true,
-                Data = null
-            };
-        }
+        
     }
 }

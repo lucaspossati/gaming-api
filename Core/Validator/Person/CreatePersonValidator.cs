@@ -1,9 +1,9 @@
-﻿using API.Domain.VM;
-using FluentValidation;
+﻿using FluentValidation;
+using Manager.VM.Person;
 
 namespace Core.Validator.User
 {
-    public class CreatePersonValidator : AbstractValidator<PersonVM>
+    public class CreatePersonValidator : AbstractValidator<NewPersonVM>
     {
         public CreatePersonValidator()
         {

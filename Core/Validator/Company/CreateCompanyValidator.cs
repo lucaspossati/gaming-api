@@ -1,9 +1,9 @@
-﻿using API.Domain.VM;
-using FluentValidation;
+﻿using FluentValidation;
+using Manager.VM.Company;
 
 namespace Core.Validator.User
 {
-    public class CreateCompanyValidator : AbstractValidator<CompanyVM>
+    public class CreateCompanyValidator : AbstractValidator<NewCompanyVM>
     {
         public CreateCompanyValidator()
         {

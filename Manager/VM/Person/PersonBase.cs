@@ -1,10 +1,10 @@
 using api.Domain.VM.Shared;
+using Manager.VM.Company;
 
-namespace API.Domain.VM{
-    public class PersonVM : BaseViewModel, ICloneable
+namespace Manager.VM.Person
+{
+    public abstract class PersonBase : BaseViewModel, ICloneable
     {
-        public Guid Id { get; set; }
-
         public string FullName { get; set; }
 
         public string PhoneNumber { get; set; }

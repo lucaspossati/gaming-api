@@ -1,14 +1,14 @@
 using api.Domain.VM.Shared;
+using Manager.VM.Person;
 
-namespace API.Domain.VM{
-    public class CompanyVM : BaseViewModel, ICloneable
+namespace Manager.VM.Company
+{
+    public abstract class BaseCompany : BaseViewModel, ICloneable
     {
-        public CompanyVM()
+        public BaseCompany()
         {
             setNumberOfPersons(Persons != null ? Persons.Count : 0);
         }
-
-        public Guid Id { get; set; }
 
         public string Name { get; set; }
 

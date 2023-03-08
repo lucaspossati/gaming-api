@@ -1,6 +1,6 @@
 ﻿using api.Domain.Services.Interfaces;
 using api.Domain.VM.Shared;
-using API.Domain.VM;
+using Manager.VM.Person;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -37,149 +37,69 @@ namespace WebApi.Controllers
 
         [HttpGet]
         [Route("search")]
-        public async Task<BaseResponse<IEnumerable<PersonVM>>> GetWithFilter([FromQuery] string? fullName = null,
+        public async Task<IActionResult> GetWithFilters([FromQuery] string? fullName = null,
             [FromQuery] string? phoneNumber = null, [FromQuery] string? address = null)
         {
             var response = await personService.GetWithFilters(fullName, phoneNumber, address);
 
-            return new BaseResponse<IEnumerable<PersonVM>>()
+            if (response.Any())
             {
-                StatusCode = HttpStatusCode.OK,
-                Message = "Success to list people",
-                Success = true,
-                Data = response
-            };
+                return Ok(response);
+            }
+            return NotFound();
         }
 
         [HttpGet]
         [Route("wild-card")]
-        public async Task<BaseResponse<PersonVM>> GetWildCard()
+        public async Task<IActionResult> GetWildCard()
         {
             var response = await personService.GetWildCard();
 
-            if (response == null)
+            if (response != null)
             {
-                return new BaseResponse<PersonVM>()
-                {
-                    StatusCode = HttpStatusCode.NotFound,
-                    Message = "No registered person",
-                    Success = false,
-                    Data = null
-                };
+                return Ok(response);
             }
-
-            return new BaseResponse<PersonVM>()
-            {
-                StatusCode = HttpStatusCode.OK,
-                Message = "Succes getting random person",
-                Success = true,
-                Data = response
-            };
-        }
-
-        [HttpGet]
-        [Route("{id:guid}")]
-        public async Task<BaseResponse<PersonVM>> Get([FromRoute] Guid id)
-        {
-            var response = await personService.Get(id);
-
-            if (response == null)
-            {
-                return new BaseResponse<PersonVM>()
-                {
-                    StatusCode = HttpStatusCode.NotFound,
-                    Message = "Person not found",
-                    Success = false,
-                    Data = null
-                };
-            }
-
-            return new BaseResponse<PersonVM>()
-            {
-                StatusCode = HttpStatusCode.OK,
-                Message = "Succes to get person",
-                Success = true,
-                Data = response
-            };
+            return NoContent();
         }
 
         [HttpPost]
         [Route("")]
-        public async Task<BaseResponse<PersonVM>> Post([FromBody] PersonVM model)
+        public async Task<IActionResult> Post([FromBody] NewPersonVM model)
         {
             var response = await personService.Post(model);
 
             if (response.Errors != null)
             {
-                return new BaseResponse<PersonVM>()
-                {
-                    StatusCode = HttpStatusCode.BadRequest,
-                    Message = "Error to create person",
-                    Success = false,
-                    Data = model
-                };
+                return BadRequest(response);
             }
-
-            return new BaseResponse<PersonVM>()
-            {
-                StatusCode = HttpStatusCode.OK,
-                Message = "Success to create person",
-                Success = true,
-                Data = response
-            };
+            return CreatedAtAction(nameof(Get), new { id = response.Id }, response);
         }
 
         [HttpPut]
         [Route("")]
-        public async Task<BaseResponse<PersonVM>> Put([FromBody] PersonVM model)
+        public async Task<IActionResult> Put([FromBody] PersonVM model)
         {
             var response = await personService.Put(model);
 
-            if (response.Errors != null)
+            if (response == null)
             {
-                return new BaseResponse<PersonVM>()
-                {
-                    StatusCode = HttpStatusCode.BadRequest,
-                    Message = "Error to update person",
-                    Success = false,
-                    Data = model
-                };
+                return NotFound();
             }
-
-            return new BaseResponse<PersonVM>()
-            {
-                StatusCode = HttpStatusCode.OK,
-                Message = "Success to update person",
-                Success = true,
-                Data = model
-            };
+            return Ok(model);
         }
 
 
         [HttpDelete]
         [Route("{id:guid}")]
-        public async Task<BaseResponse<object>> Delete([FromRoute] Guid id)
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
-            var model = await personService.Delete(id);
+            var response = await personService.Delete(id);
 
-            if (model == null)
+            if (response == null)
             {
-                return new BaseResponse<object>()
-                {
-                    StatusCode = HttpStatusCode.NotFound,
-                    Message = "Person not found",
-                    Success = false,
-                    Data = null
-                };
+                return NotFound();
             }
-
-            return new BaseResponse<object>()
-            {
-                StatusCode = HttpStatusCode.OK,
-                Message = "Success to delete person",
-                Success = true,
-                Data = null
-            };
+            return NoContent();
         }
     }
 }
