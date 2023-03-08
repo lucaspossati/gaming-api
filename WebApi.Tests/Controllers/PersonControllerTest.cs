@@ -22,20 +22,12 @@ namespace WebApi.Tests.Controllers
 
         public PersonControllerTest()
         {
-            try
-            {
-                personService = Substitute.For<IPersonService>();
-                controller = new PersonController(personService);
+            personService = Substitute.For<IPersonService>();
+            controller = new PersonController(personService);
 
-                personVMList = new PersonVMFaker().Generate(10);
-                personVM = new PersonVMFaker().Generate();
-                newPersonVM = new NewPersonVMFaker().Generate();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            
+            personVMList = new PersonVMFaker().Generate(10);
+            personVM = new PersonVMFaker().Generate();
+            newPersonVM = new NewPersonVMFaker().Generate();
         }
 
         [Fact]

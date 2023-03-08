@@ -24,20 +24,12 @@ namespace WebApi.Tests.Controllers
 
         public CompanyControllerTest()
         {
-            try
-            {
-                companyService = Substitute.For<ICompanyService>();
-                controller = new CompanyController(companyService);
+            companyService = Substitute.For<ICompanyService>();
+            controller = new CompanyController(companyService);
 
-                companyVMList = new CompanyVMFaker().Generate(10);
-                companyVM = new CompanyVMFaker().Generate();
-                newCompanyVM = new NewCompanyVMFaker().Generate();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            
+            companyVMList = new CompanyVMFaker().Generate(10);
+            companyVM = new CompanyVMFaker().Generate();
+            newCompanyVM = new NewCompanyVMFaker().Generate();
         }
 
         [Fact]
