@@ -26,7 +26,7 @@ namespace api.Domain.Services
         {
             var response = await companyRepostiory.Get();
             var responseVM = mapper.Map<List<CompanyVM>>(response);
-            responseVM.ForEach(x => x.setNumberOfPersons(x.People != null ? x.People.Count : null));
+            responseVM.ForEach(x => x.setNumberOfPersons(x.Persons.Count));
 
             return responseVM;
         }

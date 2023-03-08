@@ -11,7 +11,7 @@ namespace api.Profiles
             CreateMap<CompanyVM, Company>();
 
             CreateMap<Company, CompanyVM>()
-                .ForMember(u => u.People, opt => opt.MapFrom(sp => sp.People));
+                .ForMember(u => u.Persons, opt => opt.MapFrom(sp => sp.People));
         }
     }
 }

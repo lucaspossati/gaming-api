@@ -1,7 +1,7 @@
 ﻿using api.Domain.Services.Interfaces;
 using api.Domain.VM.Shared;
 using API.Domain.VM;
-using FakeData.PersonData;
+using FakeData.CompanyData;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,22 +12,22 @@ using Xunit;
 
 namespace WebApi.Tests.Controllers
 {
-    public class PersonControllerTest
+    public class CompanyControllerTest
     {
-        private readonly IPersonService personService;
-        private readonly PersonController controller;
-        private readonly List<PersonVM> personVMList;
-        private readonly PersonVM personVM;
+        private readonly ICompanyService companyService;
+        private readonly CompanyController controller;
+        private readonly List<CompanyVM> companyVMList;
+        private readonly CompanyVM companyVM;
 
-        public PersonControllerTest()
+        public CompanyControllerTest()
         {
             try
             {
-                personService = Substitute.For<IPersonService>();
-                controller = new PersonController(personService);
+                companyService = Substitute.For<ICompanyService>();
+                controller = new CompanyController(companyService);
 
-                personVMList = new PersonVMFaker().Generate(10);
-                personVM = new PersonVMFaker().Generate();
+                companyVMList = new CompanyVMFaker().Generate(10);
+                companyVM = new CompanyVMFaker().Generate();
             }
             catch (Exception ex)
             {
@@ -39,10 +39,10 @@ namespace WebApi.Tests.Controllers
         [Fact]
         public async Task Get_Ok()
         {
-            var control = new List<PersonVM>();
-            personVMList.ForEach(x => control.Add(x.TypedCloneDependency()));
+            var control = new List<CompanyVM>();
+            companyVMList.ForEach(x => control.Add(x.TypedCloneDependency()));
 
-            personService.Get().Returns(personVMList);
+            companyService.Get().Returns(companyVMList);
             var result = (ObjectResult)await controller.Get();
             result.StatusCode.Should().Be(StatusCodes.Status200OK);
             result.Value.Should().BeEquivalentTo(control);
@@ -51,11 +51,11 @@ namespace WebApi.Tests.Controllers
         [Fact]
         public async Task Get_NotFound()
         {
-            personService.Get().Returns(new List<PersonVM>());
+            companyService.Get().Returns(new List<CompanyVM>());
 
             var resultado = (StatusCodeResult)await controller.Get();
 
-            await personService.Received().Get();
+            await companyService.Received().Get();
             resultado.StatusCode.Should().Be(StatusCodes.Status404NotFound);
         }
 

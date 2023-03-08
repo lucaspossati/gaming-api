@@ -42,7 +42,7 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Companies");
+                    b.ToTable("Companies", (string)null);
                 });
 
             modelBuilder.Entity("Application.Models.Person", b =>
@@ -79,7 +79,7 @@ namespace Data.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.ToTable("People");
+                    b.ToTable("People", (string)null);
                 });
 
             modelBuilder.Entity("Application.Models.Person", b =>

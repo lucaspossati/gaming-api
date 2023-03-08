@@ -24,17 +24,15 @@ namespace WebApi.Controllers
 
         [HttpGet]
         [Route("get-all")]
-        public async Task<BaseResponse<IEnumerable<PersonVM>>> Get()
+        public async Task<IActionResult> Get()
         {
             var response = await personService.Get();
 
-            return new BaseResponse<IEnumerable<PersonVM>>()
+            if (response.Any())
             {
-                StatusCode = HttpStatusCode.OK,
-                Message = "Success to list people",
-                Success = true,
-                Data = response
-            };
+                return Ok(response);
+            }
+            return NotFound();
         }
 
         [HttpGet]

@@ -29,7 +29,7 @@ namespace Data.Repository
         public async Task<Company?> Get(string name, Guid? id = null)
         {
             if(id != null)
-            {
+            {   
                 var company = await context.Companies.FirstOrDefaultAsync(x => x.Name == name && x.Id != id);
                 return company;
             }

@@ -24,17 +24,14 @@ namespace WebApi.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<BaseResponse<IEnumerable<CompanyVM>>> Get()
+        public async Task<IActionResult> Get()
         {
             var response = await companyService.Get();
-
-            return new BaseResponse<IEnumerable<CompanyVM>>()
+            if (response.Any())
             {
-                StatusCode = HttpStatusCode.OK,
-                Message = "Success to list companies",
-                Success = true,
-                Data = response
-            };
+                return Ok(response);
+            }
+            return NotFound();
         }
 
         [HttpGet]
