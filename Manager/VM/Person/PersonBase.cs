@@ -13,7 +13,7 @@ namespace Manager.VM.Person
 
         public Guid CompanyId { get; set; }
 
-        public CompanyVM Company { get; set; }
+        public CompanyVM? Company { get; set; }
 
         public object Clone()
         {

@@ -16,7 +16,7 @@ namespace Manager.VM.Company
 
         public DateTime RegistrationDate { get; set; }
 
-        public ICollection<PersonVM> Persons { get; set; }
+        public ICollection<PersonVM>? Persons { get; set; }
 
         public void setNumberOfPersons(int numberOfPersons)
         {

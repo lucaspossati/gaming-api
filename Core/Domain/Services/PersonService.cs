@@ -82,6 +82,13 @@ namespace api.Domain.Services
 
             Validation.AddErrors(model, results);
 
+            var modelOld = await personRepository.Get(model.Id);
+
+            if (modelOld == null)
+            {
+                model.AddError("Id not found", "Id");
+            }
+
             if (model.Errors != null && model.Errors.Count > 0) return model;
 
             await personRepository.Put(mapper.Map<Person>(model));
