@@ -19,10 +19,11 @@ namespace Data.Repository
 
         public async Task<IEnumerable<Person>> Get()
         {
-            return await context.People
+            var teste = await context.People
                 .Include(x => x.Company)
                 .OrderBy(x => x.FullName)
                 .ToListAsync();
+            return teste;
         }
 
         public async Task<IEnumerable<Person>> GetWithFilters(string? fullName = null, string? phoneNumber = null, string? address = null)
@@ -54,7 +55,7 @@ namespace Data.Repository
 
         public async Task<Person> Post(Person model)
         {
-            context.People.Add(model);
+            await context.People.AddAsync(model);
 
             await context.SaveChangesAsync();
 

@@ -19,6 +19,7 @@ namespace Manager.Tests.Services
         private readonly IMapper mapper;
         private readonly List<Person> personList;
         private readonly Person person;
+        private readonly PersonVM personVM;
         private readonly NewPersonVM newPersonVM;
 
         public PersonServicesTest()
@@ -30,6 +31,7 @@ namespace Manager.Tests.Services
             personList = new PersonFaker().Generate(10);
             person = new PersonFaker().Generate();
             newPersonVM = new NewPersonVMFaker().Generate();
+            personVM = new PersonVMFaker(true).Generate();
         }
 
         [Fact]
@@ -52,18 +54,6 @@ namespace Manager.Tests.Services
 
             await personRepository.Received().Get();
             retorno.Should().BeEquivalentTo(new List<Person>());
-        }
-
-        [Fact]
-        public async Task Post_Created()
-        {
-            personRepository.Post(Arg.Any<Person>()).Returns(person);
-            var controle = mapper.Map<PersonVM>(person);
-            var retorno = await service.Post(newPersonVM);
-
-            await personRepository.Received().Post(Arg.Any<Person>());
-            retorno.Should().BeEquivalentTo(controle);
-            
         }
 
         [Fact]
@@ -90,6 +80,16 @@ namespace Manager.Tests.Services
             response.Should().BeEquivalentTo(control);
         }
 
-       
+        [Fact]
+        public async Task Post_Created()
+        {
+            personRepository.Post(Arg.Any<Person>()).Returns(person);
+            var control = mapper.Map<PersonVM>(person);
+            var response = await service.Post(newPersonVM);
+
+            await personRepository.Received().Post(Arg.Any<Person>());
+            response.Should().BeEquivalentTo(control);
+        }
+
     }
 }
