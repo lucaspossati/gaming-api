@@ -19,5 +19,7 @@ namespace Data.Repository.Interface
         Task<Person> Put(Person model);
 
         Task Delete(Guid id);
+
+        Person GetWildCard();
     }
 }

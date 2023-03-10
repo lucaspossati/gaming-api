@@ -7,6 +7,7 @@ namespace api.Domain.Services.Interfaces
         Task<IEnumerable<PersonVM>> Get();
         Task<IEnumerable<PersonVM>> GetWithFilters(string? fullName = null, string? phoneNumber = null, string? address = null);
         Task<PersonVM> GetWildCard(int? index = null);
+        PersonVM GetWildCardOption2();
         Task<PersonVM> Get(Guid id);
         Task<PersonVM> Post(NewPersonVM model);
         Task<PersonVM> Put(PersonVM model);

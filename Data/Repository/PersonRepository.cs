@@ -53,6 +53,14 @@ namespace Data.Repository
             return await context.People.FindAsync(id);
         }
 
+        public Person GetWildCard()
+        {
+            Random rand = new Random();
+            int toSkip = rand.Next(0, context.People.Count());
+
+            return context.People.Skip(toSkip).Take(1).First();
+        }
+
         public async Task<Person> Post(Person model)
         {
             await context.People.AddAsync(model);

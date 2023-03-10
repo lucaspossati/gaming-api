@@ -48,6 +48,13 @@ namespace api.Domain.Services
             return mapper.Map<PersonVM>(index == null ? response[randomIndex] : response[index.Value]);
         }
 
+        public PersonVM GetWildCardOption2()
+        {
+            var response = personRepository.GetWildCard();
+
+            return mapper.Map<PersonVM>(response);
+        }
+
         public async Task<PersonVM> Get(Guid id)
         {
             var response = await personRepository.Get(id);

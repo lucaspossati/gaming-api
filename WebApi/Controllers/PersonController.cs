@@ -62,6 +62,19 @@ namespace WebApi.Controllers
             return NoContent();
         }
 
+        [HttpGet]
+        [Route("wild-card-option-2")]
+        public async Task<IActionResult> GetWildCardOption2()
+        {
+            var response =  personService.GetWildCardOption2();
+
+            if (response != null)
+            {
+                return Ok(response);
+            }
+            return NoContent();
+        }
+
         [HttpPost]
         [Route("")]
         public async Task<IActionResult> Post([FromBody] NewPersonVM model)
